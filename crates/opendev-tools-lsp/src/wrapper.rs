@@ -318,7 +318,8 @@ async fn notify_did_open(
     file_path: &Path,
     uri: &str,
 ) -> Result<(), LspError> {
-    let content = std::fs::read_to_string(file_path)
+    let content = tokio::fs::read_to_string(file_path)
+        .await
         .map_err(|e| LspError::FileNotFound(format!("{}: {}", file_path.display(), e)))?;
 
     let language_id = handler.config().language_id.clone();
